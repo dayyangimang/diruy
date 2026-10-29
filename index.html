@@ -1,0 +1,2325 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>studispace · bento</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext x='32' y='51' font-size='52' text-anchor='middle'%3E%F0%9F%96%95%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f6f8fa;
+  --surface: #ffffff;
+  --surface-alt: #f1f4f8;
+  --surface-hover: #eaf0f6;
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --text-sub: #94a3b8;
+  --accent: #6da695;
+  --accent-light: #e8f3f0;
+  --accent-glow: rgba(109, 166, 149, 0.14);
+  --green: #6da695;
+  --green-light: #e8f3f0;
+  --amber: #c4a574;
+  --amber-light: #f7f2e9;
+  --blue: #7aa8c9;
+  --blue-light: #eaf2f7;
+  --purple: #8ca4b8;
+  --purple-light: #edf2f6;
+  --card-radius: 24px;
+  --inner-radius: 16px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px -4px rgba(15,23,42,0.06);
+  --shadow-lg: 0 20px 40px -12px rgba(15,23,42,0.12);
+}
+
+[data-theme='dark'] {
+  --bg: #090a0f;
+  --surface: #11131a;
+  --surface-alt: #161922;
+  --surface-hover: #1e2230;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-sub: #64748b;
+  --accent: #7fb9aa;
+  --accent-light: rgba(127, 185, 170, 0.13);
+  --accent-glow: rgba(127, 185, 170, 0.2);
+  --green: #7fb9aa;
+  --green-light: rgba(127, 185, 170, 0.13);
+  --amber: #cbb48d;
+  --amber-light: rgba(203, 180, 141, 0.13);
+  --blue: #8db3cb;
+  --blue-light: rgba(141, 179, 203, 0.13);
+  --purple: #9eb3c4;
+  --purple-light: rgba(158, 179, 196, 0.13);
+  --shadow: 0 1px 3px rgba(0,0,0,0.4), 0 8px 30px -4px rgba(0,0,0,0.6);
+  --shadow-lg: 0 24px 48px -12px rgba(0,0,0,0.8);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  min-height: 100vh;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(at 100% 0%, #202734 0px, transparent 50%),
+    radial-gradient(at 0% 100%, #202734 0px, transparent 50%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  padding: 24px;
+}
+
+button, input, textarea {
+  font-family: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+}
+button { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+
+.bento-container {
+  max-width: 1360px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* TOP NAVBAR BENTO */
+.nav-bento {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow);
+  position: relative;
+  z-index: 50;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.03em;
+}
+
+.brand-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 12px var(--green);
+  display: inline-block;
+}
+
+.badge-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: var(--surface-alt);
+  color: var(--text-muted);
+  border: 1px solid var(--line);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.theme-btn, .menu-toggle {
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.theme-btn:hover, .menu-toggle:hover {
+  background: var(--surface-hover);
+  border-color: var(--line-strong);
+  transform: translateY(-1px);
+}
+
+.menu-toggle {
+  font-size: 16px;
+  padding: 8px 14px;
+}
+
+/* MENU DROPDOWN */
+.menu-dropdown {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 1360px;
+  max-height: 80vh;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+  border-radius: 28px;
+  box-shadow: var(--shadow-lg);
+  padding: 40px;
+  display: none;
+  z-index: 3000;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+[data-theme='dark'] .menu-dropdown {
+  background: #202734;
+}
+
+.menu-dropdown.open {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(32, 39, 52, 0.85);
+  z-index: 2999;
+  display: none;
+}
+
+.menu-backdrop.open {
+  display: block;
+}
+
+.menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.menu-header h2 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.menu-close {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  color: var(--text-muted);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.menu-close:hover {
+  background: var(--text);
+  color: var(--surface);
+  transform: rotate(90deg);
+}
+
+.menu-section {
+  margin-bottom: 28px;
+}
+
+.menu-section:last-child {
+  margin-bottom: 0;
+}
+
+.menu-section-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.menu-box {
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  height: 100%;
+  position: relative;
+}
+
+.menu-box:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+}
+
+.menu-box-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.menu-box-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: var(--surface-alt);
+  flex-shrink: 0;
+}
+
+.menu-box-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.menu-box-icon svg {
+  width: 28px;
+  height: 28px;
+  color: var(--text);
+}
+
+.menu-box-category {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+.menu-box-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.menu-box-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  flex-grow: 1;
+}
+
+.menu-box-action {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: auto;
+}
+
+.menu-divider {
+  height: 1px;
+  background: var(--line);
+  margin: 20px 0;
+}
+
+@media (max-width: 768px) {
+  .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .menu-box {
+    padding: 16px 12px;
+  }
+  .menu-box-icon {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* BENTO GRID MAIN LAYOUT */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+}
+
+/* BENTO ITEM BASE */
+.bento-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.bento-item:hover {
+  border-color: var(--line-strong);
+}
+
+/* ITEM 1: HERO IDENTITY BENTO (4 Cols) */
+.bento-hero {
+  grid-column: span 4;
+  justify-content: space-between;
+  background: linear-gradient(145deg, var(--surface), var(--surface-alt));
+}
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.hero-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 5px 12px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-title {
+  font-size: clamp(28px, 3.2vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+
+.hero-title span {
+  background: linear-gradient(120deg, var(--accent), var(--blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-desc {
+  color: var(--text-muted);
+  font-size: 14.5px;
+  line-height: 1.55;
+  margin-bottom: 24px;
+}
+
+.hero-quick-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hero-action-btn {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 9px 15px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.hero-action-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* ITEM 2: CLOCK & TIME WIDGET BENTO (4 Cols) */
+.bento-clock {
+  grid-column: span 4;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: radial-gradient(circle at center, var(--accent-light) 0%, var(--surface) 75%);
+  cursor: pointer;
+  user-select: none;
+}
+
+.clock-subhead {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.clock-live-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(38px, 4.5vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--text);
+  margin-bottom: 10px;
+  font-variant-numeric: tabular-nums;
+  transition: transform 0.2s;
+}
+
+.bento-clock:hover .clock-live-val {
+  transform: scale(1.03);
+}
+
+.clock-date-val {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.clock-pills {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.clock-pill {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text-muted);
+}
+
+/* ITEM 3: ACADEMIC & GDRIVE BENTO (4 Cols) */
+.bento-academic {
+  grid-column: span 4;
+  justify-content: space-between;
+  background: linear-gradient(135deg, var(--surface), var(--surface-alt));
+}
+
+.academic-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.academic-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.drive-bento-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--text);
+  color: var(--surface);
+  border-radius: var(--inner-radius);
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.2s;
+  box-shadow: 0 8px 20px -6px rgba(0,0,0,0.3);
+}
+
+.drive-bento-link:hover {
+  transform: translateY(-2px);
+  opacity: 0.92;
+}
+
+.academic-nav-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.academic-nav-btn {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.academic-nav-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.academic-nav-btn strong {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.academic-nav-btn span {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+/* ITEM 4: NOTES BENTO (7 Cols) */
+.bento-notes {
+  grid-column: span 7;
+}
+
+.notes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.notes-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notes-title {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.new-note-btn {
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  padding: 7px 14px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+  transition: all 0.2s;
+}
+
+.new-note-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+}
+
+.note-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: var(--inner-radius);
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.note-input {
+  width: 100%;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  outline: none;
+  background: transparent;
+}
+
+.note-input::placeholder, .note-textarea::placeholder {
+  color: var(--text-sub);
+}
+
+.note-textarea {
+  width: 100%;
+  min-height: 80px;
+  font-size: 14px;
+  color: var(--text);
+  resize: vertical;
+  outline: none;
+  background: transparent;
+  line-height: 1.55;
+}
+
+.note-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.note-status {
+  font-size: 12px;
+  color: var(--green);
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.note-status.show {
+  opacity: 1;
+}
+
+.note-btn {
+  background: var(--accent);
+  color: #ffffff;
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+.note-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.notes-list::-webkit-scrollbar {
+  width: 5px;
+}
+.notes-list::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 10px;
+}
+
+.note-item {
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  transition: border-color 0.2s;
+}
+
+.note-item:hover {
+  border-color: var(--line-strong);
+}
+
+.note-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.note-item strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 3px;
+  color: var(--text);
+}
+
+.note-item p {
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.45;
+}
+
+.note-item-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.note-item-actions button {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 5px 10px;
+  border-radius: 8px;
+  transition: all 0.15s;
+}
+
+.note-item-actions button:hover {
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+
+.note-item-actions button:last-child:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+/* ITEM 5: TOOLS BENTO (5 Cols) */
+.bento-tools {
+  grid-column: span 5;
+}
+
+.tools-title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.tools-title {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.tool-card {
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: var(--inner-radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  text-decoration: none;
+  transition: all 0.2s;
+  min-height: 125px;
+}
+
+.tool-card:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.tool-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tool-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 17px;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.tool-arrow {
+  font-size: 16px;
+  color: var(--text-sub);
+  transition: transform 0.2s, color 0.2s;
+}
+
+.tool-card:hover .tool-arrow {
+  transform: translate(2px, -2px);
+  color: var(--accent);
+}
+
+.tool-info h3 {
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 2px;
+  color: var(--text);
+}
+
+.tool-info p {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* FOOTER BENTO */
+.footer-bento {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font-size: 13px;
+  box-shadow: var(--shadow);
+}
+
+/* MODALS */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(32, 39, 52, 0.8);
+  backdrop-filter: blur(16px);
+  display: none;
+  place-items: center;
+  padding: 24px;
+  z-index: 2000;
+}
+
+.modal-overlay.open {
+  display: grid;
+}
+
+.modal-content {
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 28px;
+  width: 100%;
+  max-width: 740px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+  padding: 36px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+
+.modal-close:hover {
+  background: var(--text);
+  color: var(--surface);
+  transform: rotate(90deg);
+}
+
+/* CLOCK MODAL */
+.clock-modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 420px;
+  padding: 60px 20px;
+}
+
+.clock-label, .timer-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.clock-time, .timer-display {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(48px, 12vw, 100px);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 32px;
+}
+
+.clock-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.clock-action-btn {
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  padding: 12px 22px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.clock-action-btn:hover {
+  border-color: var(--accent);
+  background: var(--surface-hover);
+}
+
+.clock-action-btn span {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 3px;
+  color: var(--accent);
+}
+
+/* CALENDAR MODAL */
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.calendar-title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.calendar-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.calendar-nav button {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  color: var(--text);
+  transition: all 0.2s;
+}
+
+.calendar-nav button:hover {
+  background: var(--surface-hover);
+  border-color: var(--line-strong);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.calendar-weekday {
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 8px 0;
+  text-transform: uppercase;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.calendar-day.empty {
+  background: transparent;
+  border-color: transparent;
+}
+
+.calendar-day.today {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+/* SCHEDULE MODAL */
+.schedule-title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.schedule-subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.schedule-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.schedule-tab {
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+
+.schedule-tab:hover {
+  color: var(--text);
+  background: var(--surface-hover);
+}
+
+.schedule-tab.active {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+.schedule-table-wrap {
+  border: 1px solid var(--line);
+  border-radius: var(--inner-radius);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.schedule-table th, .schedule-table td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+.schedule-table thead th {
+  background: var(--surface-alt);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.schedule-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.schedule-empty {
+  color: var(--text-sub);
+}
+
+.schedule-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.schedule-edit-btn {
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  padding: 10px 22px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.schedule-edit-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--line-strong);
+}
+
+.schedule-edit-btn.active {
+  background: var(--text);
+  color: var(--surface);
+  border-color: var(--text);
+}
+
+.schedule-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.schedule-edit-day {
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.schedule-edit-day > strong {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.schedule-edit-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 36px;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.schedule-edit-input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  outline: none;
+}
+
+.schedule-remove-btn {
+  width: 36px;
+  height: 36px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+
+.schedule-remove-btn:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+.schedule-add-btn {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 6px;
+}
+
+/* TIMER MODAL */
+.timer-modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 420px;
+  padding: 60px 20px;
+}
+
+.timer-inputs {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.timer-inputs label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.timer-inputs input {
+  width: 90px;
+  padding: 12px;
+  text-align: center;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font-size: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  outline: none;
+}
+
+.timer-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.timer-btn {
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.timer-btn-primary {
+  background: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+.timer-btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.timer-btn-secondary {
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+.timer-btn-secondary:hover {
+  background: var(--surface-hover);
+}
+
+.bento-grid > #calendarModal,
+.bento-grid > #scheduleModal {
+  position: relative;
+  inset: auto;
+  display: block;
+  grid-column: span 6;
+  padding: 0;
+  background: transparent;
+  backdrop-filter: none;
+  z-index: 1;
+}
+.bento-grid > #calendarModal > .modal-content,
+.bento-grid > #scheduleModal > .modal-content {
+  max-width: none;
+  max-height: none;
+  overflow: visible;
+  border-radius: var(--card-radius);
+  padding: 28px;
+}
+.bento-grid > #calendarModal .modal-close,
+.bento-grid > #scheduleModal .modal-close { display: none; }
+#calendarModal .calendar-title { font-size: 19px; }
+#calendarModal .calendar-day { min-height: 42px; }
+#scheduleModal .schedule-title { font-size: 19px; }
+#scheduleModal .schedule-subtitle { margin-bottom: 16px; }
+
+/* RESPONSIVE BREAKPOINTS */
+@media (max-width: 1024px) {
+  .bento-hero { grid-column: span 12; }
+  .bento-clock { grid-column: span 6; }
+  .bento-academic { grid-column: span 6; }
+  .bento-notes { grid-column: span 12; }
+  .bento-tools { grid-column: span 12; }
+}
+
+@media (max-width: 680px) {
+  body { padding: 14px; }
+  .bento-grid > #calendarModal,
+  .bento-grid > #scheduleModal { grid-column: span 12; }
+  .bento-grid > #calendarModal > .modal-content,
+  .bento-grid > #scheduleModal > .modal-content { padding: 20px; }
+  .bento-clock { grid-column: span 12; }
+  .bento-academic { grid-column: span 12; }
+  .tools-grid { grid-template-columns: 1fr; }
+  .schedule-edit-row { grid-template-columns: 1fr; }
+  .footer-bento { flex-direction: column; gap: 8px; text-align: center; }
+  .nav-bento { padding: 12px 16px; }
+  .badge-tag { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="bento-container">
+
+  <!-- TOP NAV BENTO -->
+  <header class="nav-bento">
+    <div class="nav-brand">
+      <span class="brand-dot"></span>
+      <a href="index.html">studispace</a>
+    </div>
+
+    <div class="nav-actions">
+      <button class="theme-btn" id="themeToggle">
+        <span id="themeLabel">Dark</span>
+      </button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+    </div>
+
+    <!-- FLOATING MENU DROPDOWN -->
+    <div class="menu-backdrop" id="menuBackdrop"></div>
+    <nav class="menu-dropdown" id="menuDropdown" role="dialog" aria-label="Menu navigasi">
+      <div class="menu-header">
+        <h2>Menu</h2>
+        <button class="menu-close" id="menuClose" aria-label="Tutup menu">×</button>
+      </div>
+
+      <section class="menu-section">
+        <div class="menu-section-title">LOKAL</div>
+        <div class="menu-grid">
+          <a class="menu-box" href="https://dayyangimang.github.io/adiruy/" target="_blank" rel="noopener">
+            <div class="menu-box-header">
+              <div class="menu-box-icon"><img src="https://www.google.com/s2/favicons?domain=dayyangimang.github.io&sz=128" alt="Web Incess"></div>
+              <div class="menu-box-category">KAMPUS</div>
+            </div>
+            <div class="menu-box-name">Web Incess</div>
+            <div class="menu-box-desc">Sistem akademik & informasi kampus.</div>
+            <div class="menu-box-action">BUKA LINK →</div>
+          </a>
+          <a class="menu-box" href="#notes">
+            <div class="menu-box-header">
+              <div class="menu-box-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+              <div class="menu-box-category">CATATAN</div>
+            </div>
+            <div class="menu-box-name">Catatan Cepat</div>
+            <div class="menu-box-desc">Tulis catatan & simpan progress.</div>
+            <div class="menu-box-action">BUKA LINK →</div>
+          </a>
+          <a class="menu-box" href="kalkulator.html">
+            <div class="menu-box-header">
+              <div class="menu-box-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h12M10 12h8M10 16h4"/></svg></div>
+              <div class="menu-box-category">ALAT</div>
+            </div>
+            <div class="menu-box-name">Kalkulator</div>
+            <div class="menu-box-desc">Hitung dengan cepat & mudah.</div>
+            <div class="menu-box-action">BUKA LINK →</div>
+          </a>
+          <a class="menu-box" href="#timer" id="timerLink">
+            <div class="menu-box-header">
+              <div class="menu-box-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+              <div class="menu-box-category">FOKUS</div>
+            </div>
+            <div class="menu-box-name">Fokus Timer</div>
+            <div class="menu-box-desc">Kelola waktu belajar produktif.</div>
+            <div class="menu-box-action">BUKA LINK →</div>
+          </a>
+        </div>
+      </section>
+
+      <section class="menu-section">
+        <div class="menu-section-title">WEB EKSTERNAL</div>
+        <div class="menu-grid">
+          <a class="menu-box" href="https://chatgpt.com/" target="_blank" rel="noopener">
+            <div class="menu-box-header">
+              <div class="menu-box-icon"><img src="https://www.google.com/s2/favicons?domain=chatgpt.com&sz=128" alt="ChatGPT"></div>
+              <div class="menu-box-category">AI & ALAT</div>
+            </div>
+            <div class="menu-box-name">ChatGPT</div>
+            <div class="menu-box-desc">AI bantu belajar, ringkasan, & ide.</div>
+            <div class="menu-box-action">BUKA LINK →</div>
+          </a>
+          <a class="menu-box" href="https://claude.ai/new" target="_blank" rel="noopener">
+            <div class="menu-box-header">
+              <div class="menu-box-icon"><img src="https://www.google.com/s2/favicons?domain=claude.ai&sz=128" alt="Claude"></div>
+              <div class="menu-box-category">AI & ALAT</div>
+            </div>
+            <div class="menu-box-name">Claude</div>
+            <div class="menu-box-desc">AI untuk bantu berpikir, menulis, & belajar.</div>
+            <div class="menu-box-action">BUKA LINK →</div>
+          </a>
+          <a class="menu-box" href="https://gemini.google.com/" target="_blank" rel="noopener">
+            <div class="menu-box-header">
+              <div class="menu-box-icon"><img src="https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128" alt="Gemini"></div>
+              <div class="menu-box-category">AI & ALAT</div>
+            </div>
+            <div class="menu-box-name">Gemini</div>
+            <div class="menu-box-desc">AI Google untuk eksperimen & riset.</div>
+            <div class="menu-box-action">BUKA LINK →</div>
+          </a>
+          <a class="menu-box" href="https://github.com/" target="_blank" rel="noopener">
+            <div class="menu-box-header">
+              <div class="menu-box-icon"><img src="https://www.google.com/s2/favicons?domain=github.com&sz=128" alt="GitHub"></div>
+              <div class="menu-box-category">KULIAH</div>
+            </div>
+            <div class="menu-box-name">GitHub</div>
+            <div class="menu-box-desc">Simpan & kelola project coding.</div>
+            <div class="menu-box-action">BUKA LINK →</div>
+          </a>
+          <a class="menu-box" href="https://mail.google.com/" target="_blank" rel="noopener">
+            <div class="menu-box-header">
+              <div class="menu-box-icon"><img src="https://www.google.com/s2/favicons?domain=mail.google.com&sz=128" alt="Gmail"></div>
+              <div class="menu-box-category">KULIAH</div>
+            </div>
+            <div class="menu-box-name">Gmail</div>
+            <div class="menu-box-desc">Email untuk komunikasi kampus.</div>
+            <div class="menu-box-action">BUKA LINK →</div>
+          </a>
+          <a class="menu-box" href="https://docs.google.com/document/u/0/?authuser=1" target="_blank" rel="noopener">
+            <div class="menu-box-header">
+              <div class="menu-box-icon"><img src="https://www.google.com/s2/favicons?domain=docs.google.com&sz=128" alt="Google Docs"></div>
+              <div class="menu-box-category">KULIAH</div>
+            </div>
+            <div class="menu-box-name">Google Docs</div>
+            <div class="menu-box-desc">Tulis catatan & makalah tugas.</div>
+            <div class="menu-box-action">BUKA LINK →</div>
+          </a>
+          <a class="menu-box" href="https://drive.google.com/" target="_blank" rel="noopener">
+            <div class="menu-box-header">
+              <div class="menu-box-icon"><img src="https://www.google.com/s2/favicons?domain=drive.google.com&sz=128" alt="Google Drive"></div>
+              <div class="menu-box-category">KULIAH</div>
+            </div>
+            <div class="menu-box-name">Google Drive</div>
+            <div class="menu-box-desc">Tempat materi, tugas, dan file kuliah.</div>
+            <div class="menu-box-action">BUKA LINK →</div>
+          </a>
+          <a class="menu-box" href="https://keep.google.com/u/0/" target="_blank" rel="noopener">
+            <div class="menu-box-header">
+              <div class="menu-box-icon"><img src="https://www.google.com/s2/favicons?domain=keep.google.com&sz=128" alt="Google Keep"></div>
+              <div class="menu-box-category">ALAT HEMAT</div>
+            </div>
+            <div class="menu-box-name">Google Keep</div>
+            <div class="menu-box-desc">Catatan cepat & todo kuliah.</div>
+            <div class="menu-box-action">BUKA LINK →</div>
+          </a>
+          <a class="menu-box" href="https://docs.google.com/spreadsheets/u/0/?authuser=1" target="_blank" rel="noopener">
+            <div class="menu-box-header">
+              <div class="menu-box-icon"><img src="https://www.google.com/s2/favicons?domain=docs.google.com&sz=128" alt="Google Sheets"></div>
+              <div class="menu-box-category">KULIAH</div>
+            </div>
+            <div class="menu-box-name">Google Sheets</div>
+            <div class="menu-box-desc">Rekap nilai & data tugas.</div>
+            <div class="menu-box-action">BUKA LINK →</div>
+          </a>
+          <a class="menu-box" href="https://notebooklm.google.com/?authuser=0" target="_blank" rel="noopener">
+            <div class="menu-box-header">
+              <div class="menu-box-icon"><img src="https://www.google.com/s2/favicons?domain=notebooklm.google.com&sz=128" alt="NotebookLM"></div>
+              <div class="menu-box-category">AI & ALAT</div>
+            </div>
+            <div class="menu-box-name">NotebookLM</div>
+            <div class="menu-box-desc">Tanya jawab dari materi/PDF milikmu.</div>
+            <div class="menu-box-action">BUKA LINK →</div>
+          </a>
+          <a class="menu-box" href="https://sso.undip.ac.id/pages/dashboard" target="_blank" rel="noopener">
+            <div class="menu-box-header">
+              <div class="menu-box-icon"><img src="https://www.google.com/s2/favicons?domain=sso.undip.ac.id&sz=128" alt="SSO Undip"></div>
+              <div class="menu-box-category">KAMPUS</div>
+            </div>
+            <div class="menu-box-name">SSO Undip</div>
+            <div class="menu-box-desc">E-learning & perkuliahan daring.</div>
+            <div class="menu-box-action">BUKA LINK →</div>
+          </a>
+          <a class="menu-box" href="https://www.youtube.com/" target="_blank" rel="noopener">
+            <div class="menu-box-header">
+              <div class="menu-box-icon"><img src="https://www.google.com/s2/favicons?domain=youtube.com&sz=128" alt="YouTube"></div>
+              <div class="menu-box-category">VIDEO</div>
+            </div>
+            <div class="menu-box-name">YouTube</div>
+            <div class="menu-box-desc">Kuliah dalam video, materi, & tutorial.</div>
+            <div class="menu-box-action">BUKA LINK →</div>
+          </a>
+        </div>
+      </section>
+    </nav>
+  </header>
+
+  <!-- BENTO GRID -->
+  <main class="bento-grid">
+
+    <!-- BENTO 1: HERO / IDENTITY (4 cols) -->
+    <section class="bento-item bento-hero">
+      <div>
+        <h1 class="hero-title" style="font-size: clamp(34px, 4vw, 46px); line-height: 1.15; margin-top: 10px;">web ini dibuat dengan AI🤪</h1>
+      </div>
+
+      <div class="hero-quick-actions">
+        <a class="hero-action-btn" href="#notes">
+          <span>📝 Tulis Catatan</span>
+        </a>
+        <a class="hero-action-btn" href="kalkulator.html">
+          <span>🧮 Kalkulator</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- BENTO 2: LIVE CLOCK & WIDGET (4 cols) -->
+    <section class="bento-item bento-clock">
+      <div class="clock-subhead">
+        <span>⏱ Waktu Sekarang · Klik Fullscreen</span>
+      </div>
+      <div class="clock-live-val" id="currentTime">00:00</div>
+      <div class="clock-date-val" id="today">Memuat tanggal...</div>
+
+      <div class="clock-pills">
+        <span class="clock-pill">Format Aktif</span>
+        <span class="clock-pill">Sinkron Realtime</span>
+      </div>
+    </section>
+
+    <!-- BENTO 3: ACADEMIC & GDRIVE (4 cols) -->
+    <section class="bento-item bento-academic">
+      <div>
+        <div class="academic-head">
+          <h2 class="academic-title">Portal Akademik</h2>
+          <span class="badge-tag">UNDIP</span>
+        </div>
+
+        <a class="drive-bento-link" href="https://drive.google.com/drive/folders/1WYZ73hEk0XJl9J48hRllyRr5k2bzmuof" target="_blank" rel="noopener">
+          <span>📁 Google Drive Materi Kuliah</span>
+          <span>↗</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- BENTO 4: SCRATCHPAD & QUICK NOTES (7 cols) -->
+    <section class="bento-item bento-notes" id="notes">
+      <div class="notes-header">
+        <div class="notes-title-wrap">
+          <h2 class="notes-title">Catatan Cepat</h2>
+        </div>
+        <button class="new-note-btn" id="newNoteBtn">+ Catatan Baru</button>
+      </div>
+
+      <div class="note-input-container">
+        <input class="note-input" id="noteTitle" type="text" placeholder="Beri judul catatan...">
+        <textarea class="note-textarea" id="noteContent" placeholder="Ketik ide, rangkuman tugas, atau catatan kuliah di sini..."></textarea>
+        <div class="note-actions">
+          <span class="note-status" id="noteStatus">✓ Catatan berhasil disimpan</span>
+          <button class="note-btn" id="saveNoteBtn">Simpan Catatan</button>
+        </div>
+      </div>
+
+      <div class="notes-list" id="notesList"></div>
+    </section>
+
+    <!-- BENTO 5: ESSENTIAL TOOLS (5 cols) -->
+    <section class="bento-item bento-tools">
+      <div class="tools-title-wrap">
+        <h2 class="tools-title">Tools Esensial</h2>
+        <span class="badge-tag">Akses Cepat</span>
+      </div>
+
+      <div class="tools-grid">
+        <a class="tool-card" href="https://notebooklm.google.com/?authuser=0" target="_blank" rel="noopener">
+          <div class="tool-top">
+            <div class="tool-icon" style="background: linear-gradient(135deg, #10b981, #059669)">N</div>
+            <span class="tool-arrow">↗</span>
+          </div>
+          <div class="tool-info">
+            <h3>NotebookLM</h3>
+            <p>Rangkum sumber & tanya materi AI.</p>
+          </div>
+        </a>
+
+        <a class="tool-card" href="https://docs.google.com/document/u/0/?authuser=1" target="_blank" rel="noopener">
+          <div class="tool-top">
+            <div class="tool-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706)">D</div>
+            <span class="tool-arrow">↗</span>
+          </div>
+          <div class="tool-info">
+            <h3>Google Docs</h3>
+            <p>Tulis laporan & tugas bareng tim.</p>
+          </div>
+        </a>
+
+        <a class="tool-card" href="https://docs.google.com/spreadsheets/u/0/?authuser=1" target="_blank" rel="noopener">
+          <div class="tool-top">
+            <div class="tool-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb)">S</div>
+            <span class="tool-arrow">↗</span>
+          </div>
+          <div class="tool-info">
+            <h3>Google Sheets</h3>
+            <p>Data, jadwal, dan rumus hitungan.</p>
+          </div>
+        </a>
+
+        <a class="tool-card" href="https://sso.undip.ac.id/pages/dashboard" target="_blank" rel="noopener">
+          <div class="tool-top">
+            <div class="tool-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed)">U</div>
+            <span class="tool-arrow">↗</span>
+          </div>
+          <div class="tool-info">
+            <h3>SSO Undip</h3>
+            <p>Portal SIAP, Kulon2, dan layanan.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER BENTO -->
+  <footer class="footer-bento">
+    <span>iki ngo sinau gok, ra males malesan tel</span>
+    <span>31 Mei 2026</span>
+  </footer>
+
+</div>
+
+<!-- FULLSCREEN CLOCK MODAL -->
+<div class="modal-overlay" id="clockModal">
+  <div class="modal-content clock-modal-content">
+    <div class="clock-label">Jam Digital Layar Penuh</div>
+    <div class="clock-time" id="clockDisplay">00:00:00</div>
+    <button class="modal-close" id="clockClose" aria-label="Tutup">×</button>
+    <div class="clock-actions">
+      <button class="clock-action-btn" id="clockFormatBtn">
+        Format
+        <span id="clockFormatValue">24h</span>
+      </button>
+      <button class="clock-action-btn" id="clockTimerBtn">
+        Timer
+        <span id="clockTimerValue">00:00</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- CALENDAR MODAL -->
+<div class="modal-overlay" id="calendarModal">
+  <div class="modal-content">
+    <div class="calendar-header">
+      <h2 class="calendar-title" id="calendarTitle">Kalender</h2>
+      <div class="calendar-nav">
+        <button id="prevMonth" aria-label="Bulan sebelumnya">‹</button>
+        <button id="nextMonth" aria-label="Bulan berikutnya">›</button>
+      </div>
+    </div>
+    <div class="calendar-grid" id="calendarGrid"></div>
+    <button class="modal-close" id="calendarClose" aria-label="Tutup">×</button>
+  </div>
+</div>
+
+<!-- SCHEDULE MODAL -->
+<div class="modal-overlay" id="scheduleModal">
+  <div class="modal-content">
+    <h2 class="schedule-title">Jadwal Kelas Mingguan</h2>
+    <p class="schedule-subtitle">Kelola jam dan mata kuliah berdasarkan program studi.</p>
+    <div class="schedule-tabs" id="scheduleTabs"></div>
+    <div class="schedule-table-wrap" id="scheduleTableWrap">
+      <table class="schedule-table">
+        <thead>
+          <tr><th>Hari</th><th>Jam</th><th>Mata Kuliah</th></tr>
+        </thead>
+        <tbody id="scheduleBody"></tbody>
+      </table>
+    </div>
+    <div class="schedule-editor" id="scheduleEditor" hidden></div>
+    <div class="schedule-footer">
+      <button class="schedule-edit-btn" id="scheduleEditBtn">Ubah Jadwal</button>
+    </div>
+    <button class="modal-close" id="scheduleClose" aria-label="Tutup">×</button>
+  </div>
+</div>
+
+<!-- TIMER MODAL -->
+<div class="modal-overlay" id="timerModal">
+  <div class="modal-content timer-modal-content">
+    <div class="timer-label">Pomodoro & Timer Fokus</div>
+    <div class="timer-display" id="timerDisplay">00:00</div>
+    <div class="timer-inputs">
+      <label>Menit<input type="number" id="timerMinutes" min="0" max="999" value="0"></label>
+      <label>Detik<input type="number" id="timerSeconds" min="0" max="59" value="0"></label>
+    </div>
+    <div class="timer-buttons">
+      <button class="timer-btn timer-btn-primary" id="timerStartBtn">Mulai</button>
+      <button class="timer-btn timer-btn-secondary" id="timerResetBtn">Reset</button>
+    </div>
+    <button class="modal-close" id="timerClose" aria-label="Tutup">×</button>
+  </div>
+</div>
+
+<!-- AUDIO ELEMENT FOR TIMER ALARM -->
+<audio id="timerAlarm" preload="auto" src="digital-alarm-clock.mp3"></audio>
+
+<script>
+
+
+
+			// ========== ELEMENTS ==========
+			const menuToggle = document.getElementById('menuToggle');
+			const menuDropdown = document.getElementById('menuDropdown');
+			const themeToggle = document.getElementById('themeToggle');
+			const themeLabel = document.getElementById('themeLabel');
+			const todayEl = document.getElementById('today');
+			const currentTimeEl = document.getElementById('currentTime');
+
+			const clockModal = document.getElementById('clockModal');
+			const clockDisplay = document.getElementById('clockDisplay');
+			const clockClose = document.getElementById('clockClose');
+			const clockFormatBtn = document.getElementById('clockFormatBtn');
+			const clockFormatValue = document.getElementById('clockFormatValue');
+			const clockTimerBtn = document.getElementById('clockTimerBtn');
+			const clockTimerValue = document.getElementById('clockTimerValue');
+
+			const calendarModal = document.getElementById('calendarModal');
+			const calendarClose = document.getElementById('calendarClose');
+			const calendarTitle = document.getElementById('calendarTitle');
+			const calendarGrid = document.getElementById('calendarGrid');
+			const prevMonth = document.getElementById('prevMonth');
+			const nextMonth = document.getElementById('nextMonth');
+			const calendarLink = document.getElementById('calendarLink');
+
+			const scheduleModal = document.getElementById('scheduleModal');
+			const scheduleClose = document.getElementById('scheduleClose');
+			const scheduleTabs = document.getElementById('scheduleTabs');
+			const scheduleBody = document.getElementById('scheduleBody');
+			const scheduleTableWrap = document.getElementById('scheduleTableWrap');
+			const scheduleEditor = document.getElementById('scheduleEditor');
+			const scheduleEditBtn = document.getElementById('scheduleEditBtn');
+			const scheduleLink = document.getElementById('scheduleLink');
+
+			// Render calendar and schedule as dashboard cards, keep IDs for existing logic.
+				document.querySelector('.bento-grid').append(calendarModal, scheduleModal);
+
+				const timerModal = document.getElementById('timerModal');
+			const timerClose = document.getElementById('timerClose');
+			const timerDisplay = document.getElementById('timerDisplay');
+			const timerMinutes = document.getElementById('timerMinutes');
+			const timerSeconds = document.getElementById('timerSeconds');
+			const timerStartBtn = document.getElementById('timerStartBtn');
+			const timerResetBtn = document.getElementById('timerResetBtn');
+			const timerLink = document.getElementById('timerLink');
+			const timerAlarm = document.getElementById('timerAlarm');
+
+			const noteTitle = document.getElementById('noteTitle');
+			const noteContent = document.getElementById('noteContent');
+			const noteStatus = document.getElementById('noteStatus');
+			const saveNoteBtn = document.getElementById('saveNoteBtn');
+			const newNoteBtn = document.getElementById('newNoteBtn');
+			const notesList = document.getElementById('notesList');
+
+			// ========== STATE ==========
+			const notesKey = 'ruang-kuliah-notes';
+			let notes = JSON.parse(localStorage.getItem(notesKey) || '[]');
+			let editingNoteId = null;
+
+			const scheduleDays = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+			const scheduleConfigs = {
+				informatika: {
+					label: 'Informatika UNDIP',
+					key: 'studispace-class-schedule-v2',
+					defaults: {
+						Senin: [{ jam: '07.00 - 10.20', matkul: 'Struktur Diskret' }],
+						Selasa: [],
+						Rabu: [{ jam: '10.30 - 12.10', matkul: 'Matematik 1' }, { jam: '13.00 - 15.30', matkul: 'Dasar Sistem' }],
+						Kamis: [{ jam: '07.00 - 09.30', matkul: 'Dasar Pemrograman' }, { jam: '15.40 - 18.10', matkul: 'Aljabar Linear' }],
+						Jumat: [{ jam: '07.00 - 08.40', matkul: 'Bahasa Indonesia' }, { jam: '08.50 - 10.30', matkul: 'Pancasila' }, { jam: '10.40 - 11.30', matkul: 'Bahasa Inggris' }]
+					}
+				},
+				upn: {
+					label: 'Manajemen UPN',
+					key: 'studispace-class-schedule-upn',
+					defaults: {
+						Senin: [{ jam: '09.30 - 12.00', matkul: 'Matematika Ekonomi' }, { jam: '12.15 - 13.45', matkul: 'Bahasa Indonesia' }],
+						Selasa: [{ jam: '08.15 - 09.15', matkul: 'Olahraga' }, { jam: '12.00 - 13.45', matkul: 'Dasar Manajemen' }, { jam: '14.30 - 16.15', matkul: 'Ekonomi Mikro' }],
+						Rabu: [],
+						Kamis: [{ jam: '09.00 - 11.15', matkul: 'Agama' }, { jam: '16.30 - 18.15', matkul: 'PKN' }],
+						Jumat: [{ jam: '07.30 - 08.45', matkul: 'Dasar Akuntansi' }, { jam: '09.30 - 11.15', matkul: 'Bahasa Inggris' }]
+					}
+				}
+			};
+
+			const activeScheduleKey = 'studispace-active-schedule';
+			let activeScheduleId = localStorage.getItem(activeScheduleKey) || 'informatika';
+			let classSchedule = loadSchedule(activeScheduleId);
+			let scheduleDraft = null;
+			let scheduleEditing = false;
+
+			let calendarMonth = new Date().getMonth();
+			const currentDate = new Date();
+			const calendarMonths = Array.from({ length: 13 }, (_, i) => new Date(currentDate.getFullYear(), i, 1));
+			const monthFormatter = new Intl.DateTimeFormat('id-ID', { month: 'long', year: 'numeric' });
+
+			let timerInterval = null;
+			let timerRemaining = 0;
+
+			let clockFormat = localStorage.getItem('ruang-kuliah-clock-format') || '24h';
+			clockFormatValue.textContent = clockFormat;
+
+			// ========== HELPERS ==========
+			function escapeHtml(str) {
+				return String(str).replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[c]);
+			}
+
+			function normalizeEntry(entry) {
+				return {
+					jam: String(entry?.jam || '').trim() || '—',
+					matkul: String(entry?.matkul || '').trim() || '—'
+				};
+			}
+
+			// ========== TIME & DATE ==========
+			function updateDateTime() {
+				const now = new Date();
+				const dateStr = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).format(now);
+				let h = now.getHours();
+				const m = String(now.getMinutes()).padStart(2, '0');
+				const s = String(now.getSeconds()).padStart(2, '0');
+
+				if (clockFormat === '12h') {
+					const pm = h >= 12;
+					h = h % 12 || 12;
+					const hStr = String(h).padStart(2, '0');
+					todayEl.textContent = dateStr;
+					currentTimeEl.textContent = `${hStr}:${m} ${pm ? 'PM' : 'AM'}`;
+					clockDisplay.textContent = `${hStr}:${m}:${s} ${pm ? 'PM' : 'AM'}`;
+				} else {
+					const hStr = String(h).padStart(2, '0');
+					todayEl.textContent = dateStr;
+					currentTimeEl.textContent = `${hStr}:${m}`;
+					clockDisplay.textContent = `${hStr}:${m}:${s}`;
+				}
+			}
+
+			updateDateTime();
+			setInterval(updateDateTime, 1000);
+
+			// ========== THEME ==========
+			const savedTheme = localStorage.getItem('ruang-kuliah-theme') || 'light';
+			document.documentElement.dataset.theme = savedTheme;
+			themeLabel.textContent = savedTheme === 'dark' ? 'Light' : 'Dark';
+
+			themeToggle.addEventListener('click', () => {
+				const newTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+				document.documentElement.dataset.theme = newTheme;
+				localStorage.setItem('ruang-kuliah-theme', newTheme);
+				themeLabel.textContent = newTheme === 'dark' ? 'Light' : 'Dark';
+			});
+
+			// ========== MENU ==========
+			const menuBackdrop = document.getElementById('menuBackdrop');
+			const menuClose = document.getElementById('menuClose');
+
+			menuToggle.addEventListener('click', (e) => {
+				e.stopPropagation();
+				const isOpen = menuDropdown.classList.toggle('open');
+				menuBackdrop.classList.toggle('open', isOpen);
+				menuToggle.setAttribute('aria-expanded', isOpen);
+			});
+
+			menuBackdrop.addEventListener('click', () => {
+				menuDropdown.classList.remove('open');
+				menuBackdrop.classList.remove('open');
+				menuToggle.setAttribute('aria-expanded', 'false');
+			});
+
+			menuClose.addEventListener('click', () => {
+				menuDropdown.classList.remove('open');
+				menuBackdrop.classList.remove('open');
+				menuToggle.setAttribute('aria-expanded', 'false');
+			});
+
+			menuDropdown.addEventListener('click', (e) => {
+				e.stopPropagation();
+			});
+
+			document.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape') {
+					menuDropdown.classList.remove('open');
+					menuBackdrop.classList.remove('open');
+					menuToggle.setAttribute('aria-expanded', 'false');
+				}
+			});
+
+			// ========== CLOCK MODAL ==========
+			currentTimeEl.addEventListener('click', () => {
+				clockModal.classList.add('open');
+			});
+
+			clockClose.addEventListener('click', () => {
+				clockModal.classList.remove('open');
+			});
+
+			clockFormatBtn.addEventListener('click', () => {
+				clockFormat = clockFormat === '24h' ? '12h' : '24h';
+				localStorage.setItem('ruang-kuliah-clock-format', clockFormat);
+				clockFormatValue.textContent = clockFormat;
+				updateDateTime();
+			});
+
+			clockTimerBtn.addEventListener('click', () => {
+				clockModal.classList.remove('open');
+				timerModal.classList.add('open');
+			});
+
+			// ========== CALENDAR ==========
+			function renderCalendar() {
+				const month = calendarMonths[calendarMonth];
+				calendarTitle.textContent = monthFormatter.format(month);
+				prevMonth.disabled = calendarMonth === 0;
+				nextMonth.disabled = calendarMonth === calendarMonths.length - 1;
+
+				const firstDay = new Date(month.getFullYear(), month.getMonth(), 1).getDay();
+				const daysInMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
+				const weekdays = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+
+				let html = weekdays.map(d => `<div class="calendar-weekday">${d}</div>`).join('');
+				html += Array.from({ length: firstDay }, () => '<div class="calendar-day empty"></div>').join('');
+				html += Array.from({ length: daysInMonth }, (_, i) => {
+					const day = i + 1;
+					const isToday = month.getFullYear() === currentDate.getFullYear() && month.getMonth() === currentDate.getMonth() && day === currentDate.getDate();
+					return `<div class="calendar-day${isToday ? ' today' : ''}">${day}</div>`;
+				}).join('');
+
+				calendarGrid.innerHTML = html;
+			}
+
+			if (calendarLink) calendarLink.addEventListener('click', (e) => {
+				e.preventDefault();
+				menuDropdown.classList.remove('open');
+				calendarMonth = currentDate.getMonth();
+				renderCalendar();
+				calendarModal.classList.add('open');
+			});
+
+			calendarClose.addEventListener('click', () => calendarModal.classList.remove('open'));
+			prevMonth.addEventListener('click', () => { calendarMonth--; renderCalendar(); });
+			nextMonth.addEventListener('click', () => { calendarMonth++; renderCalendar(); });
+
+			// ========== SCHEDULE ==========
+			function loadSchedule(id) {
+				const config = scheduleConfigs[id];
+				const stored = JSON.parse(localStorage.getItem(config.key) || 'null');
+				const schedule = {};
+				scheduleDays.forEach(day => {
+					schedule[day] = stored?.[day] ? stored[day].map(normalizeEntry) : (config.defaults[day] || []).map(normalizeEntry);
+				});
+				return schedule;
+			}
+
+			function saveSchedule() {
+				localStorage.setItem(scheduleConfigs[activeScheduleId].key, JSON.stringify(classSchedule));
+			}
+
+			function renderScheduleTabs() {
+				scheduleTabs.innerHTML = Object.keys(scheduleConfigs).map(id =>
+					`<button class="schedule-tab${id === activeScheduleId ? ' active' : ''}" data-id="${id}">${scheduleConfigs[id].label}</button>`
+				).join('');
+				scheduleTabs.querySelectorAll('.schedule-tab').forEach(btn => {
+					btn.addEventListener('click', () => {
+						if (btn.dataset.id !== activeScheduleId) {
+							setScheduleEditing(false);
+							activeScheduleId = btn.dataset.id;
+							localStorage.setItem(activeScheduleKey, activeScheduleId);
+							classSchedule = loadSchedule(activeScheduleId);
+							renderScheduleTabs();
+							renderScheduleTable();
+						}
+					});
+				});
+			}
+
+			function renderScheduleTable() {
+				scheduleBody.innerHTML = scheduleDays.map(day => {
+					const entries = classSchedule[day] || [];
+					if (!entries.length) return `<tr><th>${day}</th><td class="schedule-empty">—</td><td class="schedule-empty">—</td></tr>`;
+					return entries.map((e, i) =>
+						`<tr>${i === 0 ? `<th rowspan="${entries.length}">${day}</th>` : ''}<td>${escapeHtml(e.jam)}</td><td>${escapeHtml(e.matkul)}</td></tr>`
+					).join('');
+				}).join('');
+			}
+
+			function renderScheduleEditor() {
+				scheduleEditor.innerHTML = '<p style="font-size:13px;color:var(--gray-500);margin-bottom:16px">Hapus semua baris untuk menampilkan "—".</p>' +
+					scheduleDays.map(day => {
+						if (!scheduleDraft[day].length) scheduleDraft[day].push({ jam: '', matkul: '' });
+						const rows = scheduleDraft[day].map((e, i) => `
+							<div class="schedule-edit-row">
+								<input class="schedule-edit-input" data-day="${day}" data-idx="${i}" data-field="jam" value="${escapeHtml(e.jam === '—' ? '' : e.jam)}" placeholder="07.00 - 10.20">
+								<input class="schedule-edit-input" data-day="${day}" data-idx="${i}" data-field="matkul" value="${escapeHtml(e.matkul === '—' ? '' : e.matkul)}" placeholder="Mata kuliah">
+								<button class="schedule-remove-btn" data-day="${day}" data-idx="${i}">×</button>
+							</div>
+						`).join('');
+						return `<div class="schedule-edit-day"><strong>${day}</strong>${rows}<button class="schedule-add-btn" data-day="${day}">+ Tambah</button></div>`;
+					}).join('');
+
+				scheduleEditor.querySelectorAll('.schedule-edit-input').forEach(input => {
+					input.addEventListener('input', () => {
+						scheduleDraft[input.dataset.day][parseInt(input.dataset.idx)][input.dataset.field] = input.value;
+					});
+				});
+
+				scheduleEditor.querySelectorAll('.schedule-remove-btn').forEach(btn => {
+					btn.addEventListener('click', () => {
+						scheduleDraft[btn.dataset.day].splice(parseInt(btn.dataset.idx), 1);
+						renderScheduleEditor();
+					});
+				});
+
+				scheduleEditor.querySelectorAll('.schedule-add-btn').forEach(btn => {
+					btn.addEventListener('click', () => {
+						scheduleDraft[btn.dataset.day].push({ jam: '', matkul: '' });
+						renderScheduleEditor();
+					});
+				});
+			}
+
+			function setScheduleEditing(editing) {
+				scheduleEditing = editing;
+				if (editing) {
+					scheduleDraft = {};
+					scheduleDays.forEach(day => { scheduleDraft[day] = classSchedule[day].map(e => ({ ...e })); });
+					renderScheduleEditor();
+					scheduleTableWrap.hidden = true;
+					scheduleEditor.hidden = false;
+					scheduleEditBtn.textContent = 'Selesai';
+					scheduleEditBtn.classList.add('active');
+				} else {
+					scheduleDraft = null;
+					scheduleTableWrap.hidden = false;
+					scheduleEditor.hidden = true;
+					scheduleEditBtn.textContent = 'Ubah Jadwal';
+					scheduleEditBtn.classList.remove('active');
+				}
+			}
+
+			if (scheduleLink) scheduleLink.addEventListener('click', (e) => {
+				e.preventDefault();
+				menuDropdown.classList.remove('open');
+				setScheduleEditing(false);
+				renderScheduleTabs();
+				renderScheduleTable();
+				scheduleModal.classList.add('open');
+			});
+
+			scheduleClose.addEventListener('click', () => scheduleModal.classList.remove('open'));
+
+			scheduleEditBtn.addEventListener('click', () => {
+				if (!scheduleEditing) {
+					setScheduleEditing(true);
+				} else {
+					scheduleDays.forEach(day => {
+						classSchedule[day] = scheduleDraft[day].filter(e => e.jam.trim() || e.matkul.trim()).map(normalizeEntry);
+					});
+					saveSchedule();
+					renderScheduleTable();
+					setScheduleEditing(false);
+				}
+			});
+
+			renderCalendar();
+			renderScheduleTabs();
+			renderScheduleTable();
+
+			// ========== TIMER ==========
+			function renderTimer() {
+				const m = Math.floor(timerRemaining / 60);
+				const s = timerRemaining % 60;
+				const display = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+				timerDisplay.textContent = display;
+				clockTimerValue.textContent = display;
+			}
+
+			function updateTimerFromInputs() {
+				const m = Math.max(0, Math.min(999, parseInt(timerMinutes.value) || 0));
+				const s = Math.max(0, Math.min(59, parseInt(timerSeconds.value) || 0));
+				timerMinutes.value = m;
+				timerSeconds.value = s;
+				timerRemaining = m * 60 + s;
+				renderTimer();
+			}
+
+			function stopTimer() {
+				clearInterval(timerInterval);
+				timerInterval = null;
+				timerStartBtn.textContent = 'Mulai';
+			}
+
+			function toggleTimer() {
+				if (timerInterval) {
+					stopTimer();
+					return;
+				}
+				if (timerRemaining <= 0) updateTimerFromInputs();
+				if (timerRemaining <= 0) return;
+
+				timerAlarm.muted = true;
+				timerAlarm.play().catch(() => {});
+				setTimeout(() => { timerAlarm.pause(); timerAlarm.currentTime = 0; timerAlarm.muted = false; }, 150);
+
+				timerStartBtn.textContent = 'Jeda';
+				timerInterval = setInterval(() => {
+					timerRemaining--;
+					renderTimer();
+					if (timerRemaining <= 0) {
+						stopTimer();
+						timerAlarm.currentTime = 0;
+						timerAlarm.play().catch(() => {});
+					}
+				}, 1000);
+			}
+
+			timerLink.addEventListener('click', (e) => {
+				e.preventDefault();
+				menuDropdown.classList.remove('open');
+				updateTimerFromInputs();
+				timerModal.classList.add('open');
+			});
+
+			timerClose.addEventListener('click', () => timerModal.classList.remove('open'));
+			timerStartBtn.addEventListener('click', toggleTimer);
+			timerResetBtn.addEventListener('click', () => { stopTimer(); updateTimerFromInputs(); });
+
+			[timerMinutes, timerSeconds].forEach(input => {
+				input.addEventListener('change', () => { if (!timerInterval) updateTimerFromInputs(); });
+				input.addEventListener('wheel', (e) => {
+					e.preventDefault();
+					if (timerInterval) return;
+					const delta = e.deltaY < 0 ? 1 : -1;
+					const val = parseInt(input.value) || 0;
+					const max = input === timerMinutes ? 999 : 59;
+					input.value = Math.max(0, Math.min(max, val + delta));
+					updateTimerFromInputs();
+				}, { passive: false });
+			});
+
+			// ========== NOTES ==========
+			function renderNotes() {
+				notesList.innerHTML = notes.map(note => {
+					const words = note.content.trim().split(/\s+/).filter(Boolean).length;
+					const preview = note.content || 'Catatan kosong';
+					return `
+						<div class="note-item">
+							<div class="note-item-content">
+								<strong>${escapeHtml(note.title)}</strong>
+								<p>${escapeHtml(preview)}</p>
+							</div>
+							<div class="note-item-actions">
+								<button data-edit="${note.id}">Edit</button>
+								<button data-delete="${note.id}">Hapus</button>
+							</div>
+						</div>
+					`;
+				}).join('');
+
+				notesList.querySelectorAll('[data-edit]').forEach(btn => {
+					btn.addEventListener('click', () => {
+						const note = notes.find(n => n.id === parseInt(btn.dataset.edit));
+						if (note) {
+							editingNoteId = note.id;
+							noteTitle.value = note.title;
+							noteContent.value = note.content;
+							noteTitle.focus();
+						}
+					});
+				});
+
+				notesList.querySelectorAll('[data-delete]').forEach(btn => {
+					btn.addEventListener('click', () => {
+						const id = parseInt(btn.dataset.delete);
+						notes = notes.filter(n => n.id !== id);
+						localStorage.setItem(notesKey, JSON.stringify(notes));
+						if (editingNoteId === id) clearNote();
+						renderNotes();
+					});
+				});
+			}
+
+			function clearNote() {
+				editingNoteId = null;
+				noteTitle.value = '';
+				noteContent.value = '';
+				noteTitle.focus();
+			}
+
+			saveNoteBtn.addEventListener('click', () => {
+				if (!noteTitle.value.trim() && !noteContent.value.trim()) return;
+				const note = {
+					id: editingNoteId || Date.now(),
+					title: noteTitle.value.trim() || 'Tanpa judul',
+					content: noteContent.value.trim(),
+					updatedAt: Date.now()
+				};
+				const idx = notes.findIndex(n => n.id === editingNoteId);
+				if (idx >= 0) notes[idx] = note;
+				else notes.unshift(note);
+				localStorage.setItem(notesKey, JSON.stringify(notes));
+				editingNoteId = note.id;
+				renderNotes();
+				noteStatus.classList.add('show');
+				setTimeout(() => noteStatus.classList.remove('show'), 1500);
+			});
+
+			newNoteBtn.addEventListener('click', clearNote);
+
+			// Migrate old note
+			const oldNote = localStorage.getItem('ruang-kuliah-note');
+			if (!notes.length && oldNote) {
+				notes = [{ id: Date.now(), title: 'Catatan lama', content: oldNote, updatedAt: Date.now() }];
+				localStorage.setItem(notesKey, JSON.stringify(notes));
+			}
+			renderNotes();
+
+			// ========== MODAL KEYS ==========
+			document.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape') {
+					clockModal.classList.remove('open');
+					calendarModal.classList.remove('open');
+					scheduleModal.classList.remove('open');
+					timerModal.classList.remove('open');
+				}
+			});
+		
+
+
+</script>
+</body>
+</html>
